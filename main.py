@@ -2,44 +2,49 @@ import streamlit as st
 from scholarly import scholarly
 import time
 
-def buscar_dados_google_academico(nome_pesquisador):
+def fetch_google_scholar_data(researcher_name):
     try:
-        # Busca o perfil do pesquisador pelo nome
-        search_query = scholarly.search_author(nome_pesquisador)
-        autor = next(search_query)  # Pega o primeiro resultado
+        # Search for the researcher's profile by name
+        search_query = scholarly.search_author(researcher_name)
+        author = next(search_query)  # Get the first result
 
-        # Carrega o perfil completo do autor
-        autor = scholarly.fill(autor)
+        # Load the author's complete profile
+        author = scholarly.fill(author)
 
-        # Coleta as informações desejadas
-        citacoes = autor.get("citedby", "Informação não disponível")
-        indice_h = autor.get("hindex", "Informação não disponível")
-        indice_i10 = autor.get("i10index", "Informação não disponível")
+        # Collect the desired information
+        citations = author.get("citedby", "Information not available")
+        h_index = author.get("hindex", "Information not available")
+        i10_index = author.get("i10index", "Information not available")
         
-        return citacoes, indice_h, indice_i10
+        return citations, h_index, i10_index
     except StopIteration:
-        return "Perfil não encontrado no Google Acadêmico.", "-", "-"
+        return "Profile not found on Google Scholar.", "-", "-"
     except Exception as e:
-        return f"Erro ao buscar dados: {e}", "-", "-"
+        return f"Error fetching data: {e}", "-", "-"
 
-# Interface Streamlit
-st.title("Busca de Dados no Google Acadêmico")
+# Streamlit Interface
+st.title("Google Scholar Data Search")
 
-# Entrada de múltiplos nomes de pesquisadores separados por vírgulas
-nomes_pesquisadores = st.text_input("Digite os nomes dos pesquisadores no Google Acadêmico, separados por vírgulas:")
+# Input for multiple researcher names separated by commas
+researcher_names = st.text_input("Enter the names of researchers on Google Scholar, separated by commas:")
 
-if st.button("Buscar"):
-    if nomes_pesquisadores:
-        with st.spinner("Buscando..."):
-            # Divide a lista de nomes e remove espaços extras
-            nomes_lista = [nome.strip() for nome in nomes_pesquisadores.split(",")]
-            for nome in nomes_lista:
-                st.subheader(f"Dados para: {nome}")
-                citacoes, indice_h, indice_i10 = buscar_dados_google_academico(nome)
-                st.write(f"Citações: {citacoes}")
-                st.write(f"Índice h: {indice_h}")
-                st.write(f"Índice i10: {indice_i10}")
-                # Adiciona um intervalo de 2 segundos entre as buscas
+if st.button("Search"):
+    if researcher_names:
+        with st.spinner("Searching..."):
+            # Split the list of names and remove extra spaces
+            names_list = [name.strip() for name in researcher_names.split(",")]
+            for name in names_list:
+                st.subheader(f"Data for: {name}")
+                citations, h_index, i10_index = fetch_google_scholar_data(name)
+                st.write(f"Citations: {citations}")
+                st.write(f"h-index: {h_index}")
+                st.write(f"i10-index: {i10_index}")
+                # Add a 2-second interval between searches
                 time.sleep(2)
     else:
-        st.warning("Por favor, insira pelo menos um nome de pesquisador.")
+        st.warning("Please enter at least one researcher's name.")
+
+# Add source and developer credit at the end of the application
+st.write("Source: Google Scholar.")
+st.markdown("<p><strong>Tool developed by Darliane Cunha.</strong></p>", unsafe_allow_html=True)
+
