@@ -1,16 +1,14 @@
-# Busca de Dados no Google Acadêmico
+# Research Data Retrieval from Google Scholar
 
-Este projeto utiliza Streamlit e Scholarly para buscar dados de pesquisadores no Google Acadêmico. Especificamente, ele coleta informações de **citações**, **índice h**, e **índice i10** para cada pesquisador inserido.
+This project uses **Streamlit** and **Scholarly** to retrieve data about researchers from **Google Scholar**. Specifically, it collects information on citations, h-index, and i10-index for each researcher provided.
 
-## Requisitos
+## Requirements
+- **Python 3.7** or later
+- **Streamlit**
+- **Scholarly**
 
-- Python 3.7 ou superior
-- Streamlit
-- Scholarly
-
-## Instalação
-
-1. Clone o repositório:
+## Installation
+1. Clone the repository:
    ```bash
    git clone https://github.com/usuario/meu_projeto_streamlit.git
    cd meu_projeto_streamlit
